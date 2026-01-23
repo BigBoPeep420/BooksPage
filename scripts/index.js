@@ -25,7 +25,7 @@ async function init(){
     let abortCont = null;
     const navBar = document.getElementById('navBar');
     const dlgPrefs = document.getElementById('dlgPreferences');
-    const utilities = {prefs: 'sitePrefs', abort: abortCont, navigate: navigate};
+    const utilities = {prefs: 'sitePrefs', abort: abortCont, navigate: navigate, dbi: dbi};
 
     //#region Initialize Themes
     const themeMgr = new ThemeManager(sitePrefs);
