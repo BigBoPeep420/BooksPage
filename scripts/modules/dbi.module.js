@@ -1,32 +1,189 @@
-class DBI{
+export class DBI{
     dbName;
-    storeName;
+    stores;
     version;
+    keyPath;
+    indexes;
     db = null;
 
-    constructor(dbName, storeName, version = 1){
-        if(!dbName || !storeName){
-            console.error('DBI needs a DB Name and Store Name');
-            return;
-        };
+    constructor(dbName, version, stores, indexes){
         this.dbName = dbName;
-        this.storeName = storeName;
+        this.stores = stores;
         this.version = version;
+        this.keyPath = 'id';
+        this.indexes = indexes;
+    }
+    
+    async open(){
+        if(this.db) return this.db;
 
-        const req = indexedDB.open(this.dbName, this.version);
-        req.onerror = e => {
+        return new Promise((resolve, reject) => {
+            const request = indexedDB.open(this.dbName, this.version);
 
+            request.onerror = () => {
+                reject(new Error(`Database Error: ${request.error}`));
+            };
+            request.onsuccess = () => {
+                this.db = request.result;
+                resolve(this.db);
+            };
+            request.onupgradeneeded = () => {
+                const db = request.result;
+                this.stores.forEach(v => {
+                    if(!db.objectStoreNames.contains(v)){
+                        const store = db.createObjectStore(v, 
+                            { keyPath: this.keyPath, autoIncrement: true }
+                        );
+
+                        if(v in this.indexes){
+                            this.indexes[v].forEach(ind => {
+                                store.createIndex(ind.name, ind.keyPath, ind.options || {});
+                            });
+                        };
+                    }
+                });
+            };
+        });
+    }
+
+    async #ensureOpen(){
+        if(!this.db) await this.open();
+    }
+
+    async add(storeName, item){
+        await this.#ensureOpen();
+        return new Promise((resolve, reject) => {
+            const trans = this.db.transaction(storeName, 'readwrite');
+            const store = trans.objectStore(storeName);
+            const req = store.add(item);
+
+            req.onsuccess = () => resolve(req.result);
+            req.onerror = () => reject(new Error(`Failed to add [Item: ${item}:${typeof item}] to ` +
+                `[Store: ${storeName}:${typeof storeName}] : [Reason: ${req.error}]`));
+        });
+    }
+
+    async put(storeName, item){
+        await this.#ensureOpen();
+        return new Promise((resolve, reject) => {
+            const trans = this.db.transaction(storeName, 'readwrite');
+            const store = trans.objectStore(storeName);
+            const req = store.put(item);
+
+            req.onsuccess = () => resolve(req.result);
+            req.onerror = () => reject(new Error(`Failed to put [Item: ${item}:${typeof item}] in ` +
+                `[Store: ${storeName}:${typeof storeName}] : [Reason: ${req.error}]`));
+        });
+    }
+
+    async get(storeName, key){
+        await this.#ensureOpen();
+
+        return new Promise((resolve, reject) => {
+            const trans = this.db.transaction(storeName, 'readonly');
+            const store = trans.objectStore(storeName);
+            const req = store.get(key);
+
+            req.onsuccess = () => resolve(req.result);
+            req.onerror = () => reject(new Error(`Failed to get item: [Key: ${key}:${typeof key}] from ` + 
+                `[Store: ${storeName}:${typeof storeName}] : [Reason: ${req.error}]`));
+        });
+    }
+
+    async getAll(storeName){
+        await this.#ensureOpen();
+        return new Promise((resolve, reject) => {
+            const trans = this.db.transaction(storeName, 'readonly');
+            const store = trans.objectStore(storeName);
+            const req = store.getAll();
+
+            req.onsuccess = () => resolve(req.result);
+            req.onerror = () => reject(new Error(`Failed to get all items: [Store: ${this.storeName}] from ` +
+                `[Store: ${storeName}:${typeof storeName}] : [Reason: ${req.error}]`));
+        });
+    }
+
+    async delete(storeName, key){
+        await this.#ensureOpen();
+        return new Promise((resolve, reject) => {
+            const trans = this.db.transaction(storeName, 'readwrite');
+            const store = trans.objectStore(storeName);
+            const req = store.delete(key);
+
+            req.onsuccess = () => resolve();
+            req.onerror = () => reject(new Error(`Failed to delete [Key: ${key}:${typeof key}] from ` +
+                `[Store: ${storeName}:${typeof storeName}] : [Reason: ${req.error}]`));
+        });
+    }
+
+    async clear(storeName){
+        await this.#ensureOpen();
+        return new Promise((resolve, reject) => {
+            const trans = this.db.transaction(storeName, 'readwrite');
+            const store = trans.objectStore(storeName);
+            const req = store.clear();
+
+            req.onsuccess = () => resolve();
+            req.onerror = () => reject(new Error(`Failed to clear [Store: ${storeName}:${typeof storeName}] : ` +
+                `[Reason: ${req.error}]`));
+        });
+    }
+
+    async count(storeName){
+        await this.#ensureOpen();
+        return new Promise((resolve, reject) => {
+            const trans = this.db.transaction(storeName, 'readonly');
+            const store = trans.objectStore(storeName);
+            const req = store.count();
+
+            req.onsuccess = () => resolve(req.result);
+            req.onerror = () => reject(new Error(`Failed to count items in [Store: ${storeName}:${typeof storeName}] : ` + 
+                `[Reason: ${req.error}]`));
+        })
+    }
+
+    async queryByIndex(storeName, indexName, query){
+        await this.#ensureOpen();
+        return new Promise((resolve, reject) => {
+            const trans = this.db.transaction(storeName, 'readonly');
+            const store = trans.objectStore(storeName);
+
+            if(!store.indexNames.contains(indexName)){
+                reject(new Error(`[Index: ${indexName}] does not exist in [${storeName}]`));
+                return;
+            }
+            const index = store.index(indexName);
+            const req = index.getAll(query);
+
+            req.onsuccess = () => resolve(req.result);
+            req.onerror = () => reject(new Error(`Failed to query [Item: ${query}] with [Index: ${indexName}] ` + 
+                `in [Store: ${storeName}] : [Reason: ${req.error}]`));
+        });
+    }
+
+    async cursor(storeName, callback, mode = 'readonly'){
+        await this.#ensureOpen();
+        return new Promise((resolve, reject) => {
+            const trans = this.db.transaction(storeName, mode);
+            const store = trans.objectStore(storeName);
+            const req = store.openCursor();
+
+            req.onsuccess = e => {
+                const cursor = e.target.result;
+                if(cursor){
+                    callback(cursor);
+                    cursor.continue();
+                } else resolve();
+            };
+            req.onerror = () => reject(new Error(`Cursor operation failed on [Store: ${storeName}] : ` +
+                `[Reason: ${req.error}]`));
+        });
+    }
+
+    close(){
+        if(this.db){
+            this.db.close();
+            this.db = null;
         }
-        req.onupgradeneeded = e => {
-            this.db = e.target.result;
-            const store = this.db.createObjectStore(this.storeName, 
-                { }
-            )
-        }
-        req.onsuccess = e => {
-
-        }
-
-        
     }
 }

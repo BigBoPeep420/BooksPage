@@ -15,37 +15,45 @@
             <p>Digital Dust Jackets</p>
         </div>
 
+        <div id="headerContent">
+
+        </div>
     </section>
 
-    <section id="navBar">
+    <section id="navBar" class="collapsed">
+        <button type="button" id="navBarToggle">
+            <img src="./images/icons/bookshelf.svg" alt="">
+        </button>
+
         <ul class="navLinkGroup">
-            <li>
+            <li data-page="landingPage">
                 <img src="./images/icons/home-variant-outline.svg" alt="">
                 <p>Home</p>
             </li>    
-            <li>
+            <li data-page="userLibrary">
                 <img src="./images/icons/book-multiple-outline.svg" alt="">
                 <p>My Books</p>
             </li>    
-            <li>
+            <li data-page="readingGoals">
                 <img src="./images/icons/flag-outline.svg" alt="">
                 <p>Goals</p>
             </li>    
-            <li>
+            <li data-page="publicLibraries">
                 <img src="./images/icons/bookshelf.svg" alt="">
                 <p>Public Libraries</p>
             </li>    
-            <li>
+            <li data-page="bookClubs">
                 <img src="./images/icons/account-group-outline.svg" alt="">
                 <p>Book Clubs</p>
             </li>    
         </ul>
+
         <ul class="navLinkGroup">
-            <li>
+            <li data-page="preferences">
                 <img src="./images/icons/hammer-wrench.svg" alt="">
                 <p>Preferences</p>
             </li>
-            <li>
+            <li data-page="about">
                 <img src="./images/icons/information-variant-circle-outline.svg" alt="">
                 <p>About</p>
             </li>
@@ -59,6 +67,38 @@
     <section id="footer">
         <p>Copyright © Lane Robey 2026</p>
     </section>
+
+    <div id="dlgPreferences" popover="auto">
+        <button type="button" class="close">
+            <img src="./images/icons/close-thick.svg" alt="">
+        </button>
+
+        <legend>Themes</legend>
+        <section class="themes">
+            <div class="themeButton" data-theme="helheim">
+                <div></div>
+                <p>Helheim</p>
+            </div>
+            <div class="themeButton" data-theme="asgard">
+                <div></div>
+                <p>Asgard</p>
+            </div>
+            <div class="themeButton" data-theme="midgard">
+                <div></div>
+                <p>Midgard</p>
+            </div>
+            <div class="themeButton" data-theme="muspelheim">
+                <div></div>
+                <p>Muspelheim</p>
+            </div>
+            <div class="themeButton" data-theme="niflheim">
+                <div></div>
+                <p>Niflheim</p>
+            </div>
+        </section>
+
+
+    </div>
 
 </body>
 </html>
