@@ -2,7 +2,7 @@ export class DBI{
     dbName;
     stores;
     version;
-    keyPath;
+    keyPaths;
     indexes;
     db = null;
 
@@ -30,6 +30,9 @@ export class DBI{
             request.onupgradeneeded = () => {
                 const db = request.result;
                 this.stores.forEach(v => {
+                    if(db.objectStoreNames.contains(v)){
+                        db.deleteObjectStore(v);
+                    }
                     if(!db.objectStoreNames.contains(v)){
                         let keyPathToCreate = 'id';
                         let autoInc = true;

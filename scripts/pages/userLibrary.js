@@ -147,13 +147,13 @@ export async function init(utilities){
         const img = dlgBookInfo.querySelector('.read img');
         switch(book.read){
             case 'Yes':
-                img.src = '../../images/icons/emoticon-cool-outline.svg';
+                img.src = '../images/icons/emoticon-cool-outline.svg';
                 break;
             case 'Started':
-                img.src = '../../images/icons/emoticon-happy-outline.svg';
+                img.src = '../images/icons/emoticon-happy-outline.svg';
                 break;
             default:
-                img.src = '../../images/icons/emoticon-cry-outline.svg';
+                img.src = '../images/icons/emoticon-cry-outline.svg';
                 break;
         }
         dlgBookInfo.querySelector('.read').dataset.read = book.read.toLowerCase();
