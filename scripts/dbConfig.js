@@ -2,7 +2,7 @@ import { DBI } from "./modules/dbi.module.js"
 
 const CONFIG = {
     DB_NAME: 'DigitalDustJackets',
-    DB_VERSION: '5',
+    DB_VERSION: '6',
     STORES: ['preferences', 'books'],
     KEYPATHS: {'preferences': ['key', false]},  // Format: {'storeName1': ['keyName', autoIncrement],}
     INDEXES: {
@@ -12,4 +12,4 @@ const CONFIG = {
     }
 };
 
-export const dbi = new DBI(CONFIG.DB_NAME, CONFIG.DB_VERSION, CONFIG.STORES, CONFIG.INDEXES)
+export const dbi = new DBI(CONFIG.DB_NAME, CONFIG.DB_VERSION, CONFIG.STORES, CONFIG.KEYPATHS, CONFIG.INDEXES)
