@@ -111,15 +111,15 @@ export async function init(utilities){
         const readIco = document.createElement('img');
         switch(book.read){
             case 'Yes':
-                readIco.src = '../../images/icons/emoticon-cool-outline.svg';
+                readIco.src = '../images/icons/emoticon-cool-outline.svg';
                 read.classList.add('yes');
                 break;
             case 'Started':
-                readIco.src = '../../images/icons/emoticon-happy-outline.svg';
+                readIco.src = '../images/icons/emoticon-happy-outline.svg';
                 read.classList.add('started');
                 break;
             default:
-                readIco.src = '../../images/icons/emoticon-cry-outline.svg';
+                readIco.src = '../images/icons/emoticon-cry-outline.svg';
                 read.classList.add('no');
                 break;
         }

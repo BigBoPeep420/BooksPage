@@ -24,11 +24,11 @@ const niflheim = {'--colorPrimDark': '#544455', '--colorPrimMid': '#898989','--c
     '--colorHighlight': '#544455', '--colorInvalid': '#491414', '--colorValid': '#AEAEAE', }
 //#endregion
 //#region Define Notification Icons
-const icons = { error: '../images/icons/alert-rhombus.svg',
-    alert: '../images/icons/bell-alert-outline.svg',
-    notification: '../images/icons/message-text-outline.svg',
-    success: '../images/icons/check-decagram.svg',
-    failure: '../images/icons/car-brake-alert.svg',
+const icons = { error: './images/icons/alert-rhombus.svg',
+    alert: './images/icons/bell-alert-outline.svg',
+    notification: './images/icons/message-text-outline.svg',
+    success: './images/icons/check-decagram.svg',
+    failure: './images/icons/car-brake-alert.svg',
 } 
 //#endregion
 
@@ -144,7 +144,7 @@ async function init(){
     function notify(icon, message = []){
         const notifIcon = notification.querySelector('.icon');
         const notifMsg = notification.querySelector('.message');
-        notifIcon.src = icon in icons ? icons[icon] : '../images/icons/alert-outline.svg';
+        notifIcon.src = icon in icons ? icons[icon] : './images/icons/alert-outline.svg';
         const p1 = document.createElement('p');
         if(!message.length > 1){
             p1.textContent = message[0] ? message[0] : 'Uh oh! Someone else messed up...';
