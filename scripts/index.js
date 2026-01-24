@@ -5,23 +5,28 @@ dbi.open();
 //#region Define Themes
 const helheim = {'--colorPrimDark': '#544455', '--colorPrimMid': '#898989','--colorPrimLight': '#AEAEAE', 
     '--colorSecDark': '#544455', '--colorSecMid': '#404046', '--colorSecLight': '#AEAEAE', 
-    '--colorHighlight': '#544455', '--colorInvalid': '#898989', '--colorValid': '#AEAEAE', }
+    '--colorHighlight': '#544455', '--colorInvalid': '#898989', '--colorValid': '#AEAEAE', 
+    '--colorTextLight': '#FFFFFF', '--colorTextDark': '#999999',}
 
 const asgard = {'--colorPrimDark': '#544455', '--colorPrimMid': '#898989','--colorPrimLight': '#AEAEAE', 
     '--colorSecDark': '#544455', '--colorSecMid': '#d8d8c2', '--colorSecLight': '#AEAEAE', 
-    '--colorHighlight': '#544455', '--colorInvalid': '#898989', '--colorValid': '#AEAEAE', }
+    '--colorHighlight': '#544455', '--colorInvalid': '#898989', '--colorValid': '#AEAEAE',
+    '--colorTextLight': '#FFFFFF', '--colorTextDark': '#999999',}
 
 const midgard = {'--colorPrimDark': '#544455', '--colorPrimMid': '#898989','--colorPrimLight': '#AEAEAE', 
     '--colorSecDark': '#544455', '--colorSecMid': '#816d53', '--colorSecLight': '#AEAEAE', 
-    '--colorHighlight': '#544455', '--colorInvalid': '#898989', '--colorValid': '#AEAEAE', }
+    '--colorHighlight': '#544455', '--colorInvalid': '#898989', '--colorValid': '#AEAEAE',
+    '--colorTextLight': '#FFFFFF', '--colorTextDark': '#999999',}
 
-const muspelheim = {'--colorPrimDark': '#544455', '--colorPrimMid': '#898989','--colorPrimLight': '#AEAEAE', 
-    '--colorSecDark': '#544455', '--colorSecMid': '#632a2a', '--colorSecLight': '#AEAEAE', 
-    '--colorHighlight': '#544455', '--colorInvalid': '#898989', '--colorValid': '#AEAEAE', }
+const muspelheim = {'--colorPrimDark': '#55534e', '--colorPrimMid': '#8b8981','--colorPrimLight': '#b4b1a8', 
+    '--colorSecDark': '#461b1b', '--colorSecMid': '#642727', '--colorSecLight': '#803131', 
+    '--colorHighlight': '#965f18', '--colorInvalid': '#881717', '--colorValid': '#144412',
+    '--colorTextLight': '#d6c287', '--colorTextDark': '#ad9c69',}
 
 const niflheim = {'--colorPrimDark': '#544455', '--colorPrimMid': '#898989','--colorPrimLight': '#AEAEAE', 
     '--colorSecDark': '#544455', '--colorSecMid': '#222552', '--colorSecLight': '#AEAEAE', 
-    '--colorHighlight': '#544455', '--colorInvalid': '#491414', '--colorValid': '#AEAEAE', }
+    '--colorHighlight': '#544455', '--colorInvalid': '#491414', '--colorValid': '#AEAEAE',
+    '--colorTextLight': '#FFFFFF', '--colorTextDark': '#999999',}
 //#endregion
 //#region Define Notification Icons
 const icons = { error: './images/icons/alert-rhombus.svg',
@@ -100,7 +105,7 @@ async function init(){
     })
 
 
-    navigate('userLibrary');
+    navigate('bookClubs');
 
     async function navigate(page){
         const resp = await fetch(`./pages/${page}.html`);
@@ -108,7 +113,7 @@ async function init(){
         cont.replaceChildren();
         if(!resp.ok){
             const err = document.createElement('div'); err.classList.add('errMsg');
-            const img = document.createElement('img'); img.src = '../images/icons/car-brake-alert.svg';
+            const img = document.createElement('img'); img.src = './images/icons/car-brake-alert.svg';
             const msg = document.createElement('p'); msg.textContent = 'Page Not Found :(';
             const msg2 = document.createElement('p'); msg2.textContent = "Don't worry, you can blame someone else this time."
             err.append(img, msg, msg2); cont.append(err);
@@ -144,7 +149,7 @@ async function init(){
     function notify(icon, message = []){
         const notifIcon = notification.querySelector('.icon');
         const notifMsg = notification.querySelector('.message');
-        notifIcon.src = icon in icons ? icons[icon] : './images/icons/alert-outline.svg';
+        notifIcon.replaceWith(createIcon(icon ? icon : 'iconError'))
         const p1 = document.createElement('p');
         if(!message.length > 1){
             p1.textContent = message[0] ? message[0] : 'Uh oh! Someone else messed up...';
@@ -167,6 +172,14 @@ async function init(){
             notificationTimer = null;
         }, 4000);
         if(!notification.matches(':popover-open')) notification.showPopover();
+    }
+
+    function createIcon(iconID){
+        const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+        svg.classList.add('icon'); const use = document.createElementNS('http://www.w3.org/2000/svg', 'use');
+        use.setAttributeNS('http://www.w3.org/1999/xlink', 'xlink:href', `#${iconID}`);
+        svg.append(use);
+        return svg;
     }
 
 }

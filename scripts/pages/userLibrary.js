@@ -88,7 +88,7 @@ export async function init(utilities){
 
 
 
-
+    dlgAddBook.showPopover()
 
 
 

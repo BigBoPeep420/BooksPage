@@ -13,17 +13,19 @@
     position-anchor: --footerAnc;
     bottom: anchor(top);
     #bookSearchToggle{
-        background-color: burlywood;
-        padding: 3px;
+        background-color: var(--colorSecLight);
+        opacity: 0.5;
+        padding: 5px;
         position: absolute;
-        top: calc(-1 * var(--bookSearchToggleHeight));
-        height: var(--bookSearchToggleHeight);
-        width: 45px;
+        top: calc(-1 * calc(var(--fontSize3) * 1.5));
+        height: calc(var(--fontSize3) * 1.5);
+        width: calc(var(--fontSize3) * 1.5);
         left: calc(50% - 22.5px);
-        border-radius: 10px 10px 0px 0px;
+        border-radius: 40% 40% 0px 0px;
         cursor: pointer;
-        img{
-            height: 100%;
+        svg{
+            height: var(--fontSize3);
+            width: var(--fontSize3);
         }
     }
 }
@@ -39,8 +41,10 @@
     border-radius: 50%;
     display: flex;
     padding: min(10px, 2dvw);
-    img{
+    background-color: var(--colorValid);
+    svg{
         width: min(80px, 10dvw);
+        height: min(80px, 10dvw);
     }
 }
 
@@ -48,12 +52,21 @@
     margin: auto;
     width: min(500px, 80dvw);
     height: min(350px, 60dvh);
-    padding: 5px;
+    padding: 2px;
     border-radius: 15px;
-    background-color: var(--colorSecLight);
+    background-color: var(--colorSecMid);
+    box-shadow: 3px 3px 10px;
+    ::placeholder{
+        color: var(--colorTextDark);
+        scale: 0.8;
+        transform-origin: left;
+    }
     .container{
-        background-color: var(--colorPrimMid);
-        border-radius: 12px;
+        background: radial-gradient(closest-side,
+            var(--colorPrimLight) 20%,
+            var(--colorPrimMid) 100%,
+            rgb(49, 49, 49) 185%);
+        border-radius: 15px;
         padding: min(10px, 2%);
         width: 100%;
         height: 100%;
@@ -63,6 +76,11 @@
             margin: 3% 0;
             font-size: clamp(0.5rem, calc(0.8dvw + 0.8rem), 1.3rem);
             font-weight: bold;
+            background-color: var(--colorSecDark);
+            padding: 5px;
+            border-radius: 10px;
+            width: 50%;
+            text-align: center;
         }
         form{
             width: 100%;
@@ -78,6 +96,8 @@
                     font-size: clamp(0.5rem, calc(0.8dvw + 0.8rem), 1.3rem);
                     padding: 1% 2%;
                     border-radius: 5px;
+                    background-color: var(--colorSecMid);
+                    color: var(--colorTextDark);
                 }
                 textarea{ 
                     width: 100%;
@@ -85,6 +105,9 @@
                     border-radius: 5px;
                     padding: 1% 2%;
                     font-size: clamp(0.5rem, calc(0.7dvw + 0.7rem), 1.1rem);
+                    resize: none;
+                    background-color: var(--colorSecMid);
+                    color: var(--colorTextDark);
                 }
             }
             .title{
@@ -101,12 +124,16 @@
                     font-size: clamp(0.5rem, calc(0.8dvw + 0.8rem), 1rem);
                     padding: 1% 2%;
                     border-radius: 5px;
+                    background-color: var(--colorSecMid);
+                    color: var(--colorTextDark);
                 }
                 #addBookISBN{
                     width: 69%;
                     font-size: clamp(0.5rem, calc(0.8dvw + 0.8rem), 1rem);
                     padding: 1% 2%;
                     border-radius: 5px;
+                    background-color: var(--colorSecMid);
+                    color: var(--colorTextDark);
                 }
             }
             fieldset{
@@ -115,8 +142,13 @@
                 display: flex;
                 justify-content: space-evenly;
                 div{
+                    background-color: var(--colorSecLight);
+                    padding: 5px 10px;
+                    border-radius: 10px;
                     label{
                         font-size: clamp(0.5rem, calc(0.8dvw + 0.8rem), 1.3rem);
+                        cursor: pointer;
+                        color: var(--colorTextDark);
                         input{
                             opacity: 0;
                             position: absolute;
@@ -128,37 +160,27 @@
                             display: inline-flex;
                             height: min(30px, 5dvw);
                             width: min(30px, 5dvw);
-                            background-color: aqua;
+                            background: radial-gradient(farthest-corner, 
+                                var(--colorSecLight),
+                                var(--colorSecDark));
                             border-radius: 50%;
                             vertical-align: middle;
                             position: relative;
                             padding: 2px;
-                        }
-                        .radio::after{
-                            content: '';
-                            position: static;
-                            transform: scale(0) translateY(30px);
-                            opacity: 0;
-                            width: 100%;
-                            border-radius: 50%;
-                            transition: transform 0.3s ease,
-                                opacity 0.7s ease;
-                        }
-                        #addBookReadNo + .radio::after{
-                            background: url('../../images/icons/emoticon-cry-outline.svg');
-                        }
-                        #addBookReadStarted + .radio::after{
-                            background: url('../../images/icons/emoticon-happy-outline.svg');
-                        }
-                        #addBookReadYes + .radio::after{
-                            background: url('../../images/icons/emoticon-cool-outline.svg');
+                            overflow: hidden;
+                            svg{
+                                fill: var(--colorTextDark);
+                                translate: 0px 30px; 
+                                scale: 0;
+                                transition: translate 0.5s linear,
+                                    scale 0.7s ease-in;
+                            }
                         }
                         input:checked ~ .radio{
-                            background-color: aquamarine;
-                        }
-                        input:checked ~ .radio::after{
-                            transform: scale(1) translateY(0px);
-                            opacity: 1;
+                            svg{
+                                translate: 0px 0px; 
+                                scale: 1;
+                            }
                         }
                         input:focus-visible ~ .radio{
                             outline: solid 2px #000;
@@ -172,10 +194,13 @@
                 justify-self: end;
                 height: 36px;
                 border-radius: 10px;
-                background-color: #107a16;
+                background-color: var(--colorValid);
                 padding: 3px;
-                img{
+                width: min(50px, 8dvw);
+                height: min(50px, 8dvw);
+                svg{
                     height: 100%;
+                    width: 100%;
                 }
             }
         }
@@ -210,8 +235,9 @@
             justify-content: center;
             padding: 2px;
             opacity: 0.7;
-            img{
+            svg{
                 width: var(--fontSize3);
+                height: var(--fontSize3);
                 opacity: 1;
             }
         }
@@ -285,8 +311,9 @@
         height: min-content;
         padding: 10px;
         .read{
-            img{
+            svg{
                 width: var(--fontSize3);
+                height: var(--fontSize3);
             }
         }
         .title{

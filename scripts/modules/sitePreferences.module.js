@@ -59,10 +59,11 @@ export class ThemeManager{
     }
 
     async loadSavedTheme(){
-        const savedTheme = await this.prefsManager.getPref('theme', 'default');
+        const savedTheme = await this.prefsManager.getPref('theme', 'asgard');
         if(this.themes.has(savedTheme)){
             await this.applyTheme(savedTheme);
         }
+
     }
 
     getAvailableThemes(){
