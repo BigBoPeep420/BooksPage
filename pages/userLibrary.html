@@ -12,6 +12,66 @@
     <input type="search" name="bookSearch" id="bookSearch">
 </div>
 
-<div id="dlgAddBook" popover="auto">
+<button type="button" id="addBookButton">
+    <img src="../images/icons/book-plus-outline.svg" alt="">
+</button>
 
+<div id="dlgAddBook" popover="auto">
+    <button type="button" class="close">
+        <img src="../images/icons/close-thick.svg" alt="close">
+    </button>
+    <div class="container">
+        <p>Add Book</p>
+        <form action="" id="formAddBook" method="dialog">
+            <div class="title">
+                <input type="text" name="title" id="addBookTitle" placeholder="Title">
+            </div>
+
+            <div class="author">
+                <input type="text" id="addBookAuthor" name="author" placeholder="Author">
+            </div>
+
+            <div class="summary">
+                <textarea id="addBookSummary" name="summary" placeholder="Summary"></textarea>
+            </div>
+
+            <div class="isbnPages">
+                <input type="number" id="addBookISBN" name="isbn" placeholder="ISBN #">
+                <input type="number" id="addBookPages" name="pages" placeholder="# Pages">
+            </div>
+
+            <div class="read">
+                <fieldset>
+                    <legend>Have you read it?</legend>
+
+                    <div>
+                        <label for="addBookReadYes">
+                            <input type="radio" name="read" id="addBookReadYes" value="Yes">
+                            <span class="radio"></span>
+                            Yes
+                        </label>
+                    </div>
+                    <div>
+                        
+                        <label for="addBookReadStarted">
+                            <input type="radio" name="read" id="addBookReadStarted" value="Started">
+                            <span class="radio"></span>
+                            Started
+                        </label>
+                    </div>
+                    <div>
+                        <label for="addBookReadNo">
+                            <input type="radio" name="read" id="addBookReadNo" value="No" checked>
+                            <span class="radio"></span>
+                            No
+                        </label>
+                    </div>
+                </fieldset>
+            </div>
+
+            <button type="submit" class="submit">
+                <img src="../images/icons/book-plus.svg" alt="add book">
+            </button>
+        </form>
+    </div>
 </div>

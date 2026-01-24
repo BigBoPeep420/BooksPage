@@ -44,8 +44,9 @@ class Book{
     pages;
     summary;
     isbn;
+    read;
 
-    constructor(title = '', author = '', pages = 1, summary = '', isbn = 1){
+    constructor(title = '', author = '', pages = 1, summary = '', isbn = 1, read){
         if(title.length < 3) throw new RangeError('Title must be at least 3 characters');
         if(author.length < 3) throw new RangeError('Author must be at least 3 characters');
         if(pages < 1) throw new RangeError(`Pages must be at least 1`);
@@ -56,6 +57,7 @@ class Book{
             this.pages = pages;
             this.summary = summary;
             this.isbn = isbn;
+            this.read = read ? read : 'No';
         }else throw new RangeError('ISBN must be 10 or 13 digits');
     }
 

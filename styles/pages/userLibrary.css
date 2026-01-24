@@ -3,32 +3,180 @@
     --bookSearchHeight: min(60px, 5dvh)
 }
 
-@media (width < 700px) {
-    
-    #bookSearchDrawer{
-        background-color: aqua;
-        width: 100dvw;
-        height: var(--bookSearchHeight);
-        z-index: 900;
-        position: fixed;
-        position-anchor: --footerAnc;
-        bottom: anchor(top);
-        #bookSearchToggle{
-            background-color: burlywood;
-            padding: 3px;
-            position: absolute;
-            top: calc(-1 * var(--bookSearchToggleHeight));
-            height: var(--bookSearchToggleHeight);
-            width: 45px;
-            left: calc(50% - 22.5px);
-            border-radius: 10px 10px 0px 0px;
-            cursor: pointer;
-            img{
-                height: 100%;
-            }
+#bookSearchDrawer{
+    background-color: aqua;
+    width: 100dvw;
+    height: var(--bookSearchHeight);
+    z-index: 900;
+    position: fixed;
+    position-anchor: --footerAnc;
+    bottom: anchor(top);
+    #bookSearchToggle{
+        background-color: burlywood;
+        padding: 3px;
+        position: absolute;
+        top: calc(-1 * var(--bookSearchToggleHeight));
+        height: var(--bookSearchToggleHeight);
+        width: 45px;
+        left: calc(50% - 22.5px);
+        border-radius: 10px 10px 0px 0px;
+        cursor: pointer;
+        img{
+            height: 100%;
         }
     }
-    #bookSearchDrawer.collapsed{
-        transform: translateY(100%);
+}
+#bookSearchDrawer.collapsed{
+    transform: translateY(100%);
+}
+
+#addBookButton{
+    position: fixed;
+    position-anchor: --footerAnc;
+    bottom: calc(anchor(top) + min(30px, 5dvw));
+    right: min(30px, 5dvw);
+    border-radius: 50%;
+    display: flex;
+    padding: min(10px, 2dvw);
+    img{
+        width: min(80px, 10dvw);
+    }
+}
+
+#dlgAddBook{
+    margin: auto;
+    width: min(500px, 80dvw);
+    height: min(350px, 60dvh);
+    padding: 5px;
+    border-radius: 15px;
+    background-color: var(--colorSecLight);
+    .container{
+        background-color: var(--colorPrimMid);
+        border-radius: 12px;
+        padding: min(10px, 2%);
+        width: 100%;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        p{
+            margin: 3% 0;
+            font-size: clamp(0.5rem, calc(0.8dvw + 0.8rem), 1.3rem);
+            font-weight: bold;
+        }
+        form{
+            width: 100%;
+            flex-grow: 1;
+            display: grid;
+            padding: 0px;
+            grid-template-rows: min-content min-content 1fr min-content min-content min-content;
+            row-gap: 2%;
+            min-height: 0;
+            .title, .author, .summary{
+                input{
+                    width: 100%;
+                    font-size: clamp(0.5rem, calc(0.8dvw + 0.8rem), 1.3rem);
+                    padding: 1% 2%;
+                    border-radius: 5px;
+                }
+                textarea{ 
+                    width: 100%;
+                    height: 100%;
+                    border-radius: 5px;
+                    padding: 1% 2%;
+                    font-size: clamp(0.5rem, calc(0.7dvw + 0.7rem), 1.1rem);
+                }
+            }
+            .title{
+                input{
+                    font-weight: bold;
+                }
+            }
+            .isbnPages{
+                display: flex;
+                justify-content: space-between;
+                width: 100%;
+                #addBookPages{
+                    width: 30%;
+                    font-size: clamp(0.5rem, calc(0.8dvw + 0.8rem), 1rem);
+                    padding: 1% 2%;
+                    border-radius: 5px;
+                }
+                #addBookISBN{
+                    width: 69%;
+                    font-size: clamp(0.5rem, calc(0.8dvw + 0.8rem), 1rem);
+                    padding: 1% 2%;
+                    border-radius: 5px;
+                }
+            }
+            fieldset{
+                border: solid 1px;
+                padding: 5px 10px;
+                display: flex;
+                justify-content: space-evenly;
+                div{
+                    label{
+                        font-size: clamp(0.5rem, calc(0.8dvw + 0.8rem), 1.3rem);
+                        input{
+                            opacity: 0;
+                            position: absolute;
+                            height: 0;
+                            width: 0;
+                            cursor: pointer;
+                        }
+                        .radio{
+                            display: inline-flex;
+                            height: min(30px, 5dvw);
+                            width: min(30px, 5dvw);
+                            background-color: aqua;
+                            border-radius: 50%;
+                            vertical-align: middle;
+                            position: relative;
+                            padding: 2px;
+                        }
+                        .radio::after{
+                            content: '';
+                            position: static;
+                            transform: scale(0) translateY(30px);
+                            opacity: 0;
+                            width: 100%;
+                            border-radius: 50%;
+                            transition: transform 0.3s ease,
+                                opacity 0.7s ease;
+                        }
+                        #addBookReadNo + .radio::after{
+                            background: url('../../images/icons/emoticon-cry-outline.svg');
+                        }
+                        #addBookReadStarted + .radio::after{
+                            background: url('../../images/icons/emoticon-happy-outline.svg');
+                        }
+                        #addBookReadYes + .radio::after{
+                            background: url('../../images/icons/emoticon-cool-outline.svg');
+                        }
+                        input:checked ~ .radio{
+                            background-color: aquamarine;
+                        }
+                        input:checked ~ .radio::after{
+                            transform: scale(1) translateY(0px);
+                            opacity: 1;
+                        }
+                        input:focus-visible ~ .radio{
+                            outline: solid 2px #000;
+                            outline-offset: 1px;
+                        }
+                    }
+                }
+            }
+            .submit{
+                align-self: center;
+                justify-self: end;
+                height: 36px;
+                border-radius: 10px;
+                background-color: #107a16;
+                padding: 3px;
+                img{
+                    height: 100%;
+                }
+            }
+        }
     }
 }

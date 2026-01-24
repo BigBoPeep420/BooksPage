@@ -25,7 +25,9 @@ async function init(){
     let abortCont = null;
     const navBar = document.getElementById('navBar');
     const dlgPrefs = document.getElementById('dlgPreferences');
-    const utilities = {prefs: 'sitePrefs', abort: abortCont, navigate: navigate, dbi: dbi};
+    const notification = document.getElementById('notification');
+    let notificationTimer = null;
+    const utilities = {prefs: sitePrefs, abort: abortCont, navigate: navigate, dbi: dbi, notify: notify};
 
     //#region Initialize Themes
     const themeMgr = new ThemeManager(sitePrefs);
@@ -70,24 +72,20 @@ async function init(){
         }
     })
 
-
-    document.getElementById('navBarToggle').addEventListener('click', e => {
+    navBar.querySelector('#navBarToggle').addEventListener('click', e => {
         e.stopPropagation();
         toggleNavBar();
     })
 
-
-    const INDEXES = {
-        'books': [{name: 'title', keyPath: 'title', options: {unique: false}},
-            { name: 'author', keyPath: 'author', options: {unique: false}},
-            { name: 'isbn', keyPath: 'isbn', options: {unique: true}},]
-    }
-    const storename = 'books';
+    notification.querySelector('.close').addEventListener('click', e => {
+        e.stopPropagation();
+        notification.hidePopover();
+        clearTimeout(notificationTimer);
+        notificationTimer = null;
+    })
 
 
     navigate('userLibrary');
-
-
 
     async function navigate(page){
         const resp = await fetch(`./pages/${page}.html`);
@@ -109,7 +107,7 @@ async function init(){
             const code = await import(`./pages/${page}.js`);
             if(code){
                 abortCont = new AbortController;
-                utilities.abort = abortCont;
+                utilities.abort = abortCont.signal;
                 code.init(utilities);
             }
         }
@@ -126,6 +124,33 @@ async function init(){
             default:
                 navBar.classList.toggle('collapsed')
         }
+    }
+
+    function notify(icon, message = []){
+        const notifIcon = notification.querySelector('.icon');
+        const notifMsg = notification.querySelector('.message');
+        notifIcon.src = icon ? icon : '../images/icons/alert-outline.svg';
+        const p1 = document.createElement('p');
+        if(!message.length > 1){
+            p1.textContent = message[0] ? message[0] : 'Uh oh! Someone else messed up...';
+            notifMsg.append(p1);
+        }else{
+            message.forEach(v => {
+                const p = document.createElement('p');
+                p.textContent = v;
+                notifMsg.append(p);
+            });
+        }
+        if(notificationTimer){
+            clearTimeout(notificationTimer);
+            notificationTimer = null;
+        }
+        notificationTimer = setTimeout(() => {
+            notification.hidePopover();
+            clearTimeout(notificationTimer);
+            notificationTimer = null;
+        }, 4000);
+        if(!notification.matches(':popover-open')) notification.showPopover();
     }
 
 }

@@ -8,8 +8,11 @@ export async function init(utilities){
     let booksToShow = [];
     const bkSearchDrawer = document.getElementById('bookSearchDrawer');
     const cardsGrid = document.getElementById('cardsGrid');
+    const addBookBtn = document.getElementById('addBookButton');
+    const dlgAddBook = document.getElementById('dlgAddBook');
 
 
+    dlgAddBook.showPopover() // < ----------------------- DELETE!
 
 
     document.addEventListener('click', e => {
@@ -18,7 +21,13 @@ export async function init(utilities){
             bkSearchDrawer.classList.toggle('collapsed');
             return;
         }
-    });
+
+        targ = addBookBtn.contains(e.target);
+        if(targ){
+            dlgAddBook.showPopover();
+        }
+
+    }, {signal: utilities.abort});
 
     bkSearchDrawer.querySelector('#bookSearch').addEventListener('input', e => {
         const input = e.target.value.toLowerCase().trim();
@@ -29,7 +38,7 @@ export async function init(utilities){
             });
         }
         
-    })
+    });
 
     async function loadBooksFromDB() {
         const allBooks = await bookMgr.getAllBooks();
