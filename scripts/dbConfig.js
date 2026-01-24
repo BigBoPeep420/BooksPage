@@ -2,8 +2,9 @@ import { DBI } from "./modules/dbi.module.js"
 
 const CONFIG = {
     DB_NAME: 'DigitalDustJackets',
-    DB_VERSION: '4',
+    DB_VERSION: '5',
     STORES: ['preferences', 'books'],
+    KEYPATHS: {'preferences': ['key', false]},  // Format: {'storeName1': ['keyName', autoIncrement],}
     INDEXES: {
         'books': [{name: 'title', keyPath: 'title', options: {unique: false}},
             { name: 'author', keyPath: 'author', options: {unique: false}},

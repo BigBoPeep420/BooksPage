@@ -6,11 +6,11 @@ export class DBI{
     indexes;
     db = null;
 
-    constructor(dbName, version, stores, indexes){
+    constructor(dbName, version, stores, keyPaths, indexes){
         this.dbName = dbName;
         this.stores = stores;
         this.version = version;
-        this.keyPath = 'id';
+        this.keyPaths = keyPaths;
         this.indexes = indexes;
     }
     
@@ -31,8 +31,14 @@ export class DBI{
                 const db = request.result;
                 this.stores.forEach(v => {
                     if(!db.objectStoreNames.contains(v)){
+                        let keyPathToCreate = 'id';
+                        let autoInc = true;
+                        if(v in this.keyPaths){
+                            keyPathToCreate = this.keyPaths[v][0];
+                            autoInc = this.keyPaths[v][1];
+                        }
                         const store = db.createObjectStore(v, 
-                            { keyPath: this.keyPath, autoIncrement: true }
+                            { keyPath: keyPathToCreate, autoIncrement: autoInc }
                         );
 
                         if(v in this.indexes){

@@ -22,6 +22,7 @@ export class SitePreferences{
 
     async setPref(key, value){
         try{
+            
             await this.dbi.put('preferences', {key, value});
             this.cache.set(key, value);
         }catch (error) {
