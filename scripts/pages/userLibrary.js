@@ -14,8 +14,7 @@ export async function init(utilities){
     const dlgBookInfo = document.getElementById('dlgBookInfo');
 
     renderBookCards();
-    
-    showBookInfo(8456135854);
+
 
     document.addEventListener('click', e => {
         let targ = e.target.closest('#bookSearchToggle');
