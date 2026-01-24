@@ -103,6 +103,26 @@ export class DBI{
         });
     }
 
+    async getKeyByIndex(storeName, indexName, query){
+        await this.#ensureOpen();
+        return new Promise((resolve, reject) => {
+            const trans = this.db.transaction(storeName, 'readonly');
+            const store = trans.objectStore(storeName);
+            
+            if(!store.indexNames.contains(indexName)){
+                reject(new Error(`[Index: ${indexName}] does not exist in [${storeName}]`));
+                return;
+            }
+            const index = store.index(indexName);
+            const req = index.getKey(query)
+
+            req.onsuccess = () => resolve(req.result);
+            req.onerror = () => reject(new Error(`Failed to find primary key for [Query: ${query}:${typeof query}] in ` + 
+                `[Store: ${storeName}] with [Index: ${indexName}]`
+            ));
+        })
+    }
+
     async delete(storeName, key){
         await this.#ensureOpen();
         return new Promise((resolve, reject) => {

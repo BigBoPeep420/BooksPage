@@ -24,11 +24,11 @@
         <p>Add Book</p>
         <form action="" id="formAddBook" method="dialog">
             <div class="title">
-                <input type="text" name="title" id="addBookTitle" placeholder="Title">
+                <input type="text" name="title" id="addBookTitle" placeholder="Title" required minlength="3">
             </div>
 
             <div class="author">
-                <input type="text" id="addBookAuthor" name="author" placeholder="Author">
+                <input type="text" id="addBookAuthor" name="author" placeholder="Author" required minlength="3">
             </div>
 
             <div class="summary">
@@ -36,8 +36,8 @@
             </div>
 
             <div class="isbnPages">
-                <input type="number" id="addBookISBN" name="isbn" placeholder="ISBN #">
-                <input type="number" id="addBookPages" name="pages" placeholder="# Pages">
+                <input type="text" id="addBookISBN" name="isbn" placeholder="ISBN # (10 or 13 Digit)" required pattern="^(\d{10}|\d{13})$">
+                <input type="number" id="addBookPages" name="pages" placeholder="# Pages" required min="1">
             </div>
 
             <div class="read">
@@ -75,3 +75,29 @@
         </form>
     </div>
 </div>
+
+<dialog id="dlgBookInfo">
+    <button type="button" class="close">
+        <img src="../images/icons/close-thick.svg" alt="close">
+    </button>
+    <div class="container">
+        <div class="title">
+            <p></p>
+        </div>
+        <div class="author">
+            <p></p>
+        </div>
+        <div class="pages">
+            <p></p><span>pgs</span>
+        </div>
+        <div class="summary">
+            <p></p>
+        </div>
+        <div class="isbn">
+            <p></p>
+        </div>
+        <div class="read">
+            <img src="" alt="">
+        </div>
+    </div>
+</dialog>

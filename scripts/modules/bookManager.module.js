@@ -30,15 +30,22 @@ export class BookManager{
     }
 
     async updateBook(book){
-        return await this.put('books', book);
+        return await this.dbi.put('books', book);
     }
 
-    async deleteBook(id){
-        return await this.delete('books', id);
+    async deleteBookByID(id){
+        return await this.dbi.delete('books', id);
+    }
+
+    async deleteBookByISBN(isbn){
+        const key = await this.dbi.getKeyByIndex('books', 'isbn', isbn);
+        if(key){
+            return await this.dbi.delete('books', key);
+        }
     }
 }
 
-class Book{
+export class Book{
     title;
     author;
     pages;

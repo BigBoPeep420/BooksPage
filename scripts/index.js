@@ -6,19 +6,32 @@ dbi.open();
 const helheim = {'--colorPrimDark': '#544455', '--colorPrimMid': '#898989','--colorPrimLight': '#AEAEAE', 
     '--colorSecDark': '#544455', '--colorSecMid': '#404046', '--colorSecLight': '#AEAEAE', 
     '--colorHighlight': '#544455', '--colorInvalid': '#898989', '--colorValid': '#AEAEAE', }
+
 const asgard = {'--colorPrimDark': '#544455', '--colorPrimMid': '#898989','--colorPrimLight': '#AEAEAE', 
     '--colorSecDark': '#544455', '--colorSecMid': '#d8d8c2', '--colorSecLight': '#AEAEAE', 
     '--colorHighlight': '#544455', '--colorInvalid': '#898989', '--colorValid': '#AEAEAE', }
+
 const midgard = {'--colorPrimDark': '#544455', '--colorPrimMid': '#898989','--colorPrimLight': '#AEAEAE', 
     '--colorSecDark': '#544455', '--colorSecMid': '#816d53', '--colorSecLight': '#AEAEAE', 
     '--colorHighlight': '#544455', '--colorInvalid': '#898989', '--colorValid': '#AEAEAE', }
+
 const muspelheim = {'--colorPrimDark': '#544455', '--colorPrimMid': '#898989','--colorPrimLight': '#AEAEAE', 
-    '--colorSecDark': '#544455', '--colorSecMid': '#864c4c', '--colorSecLight': '#AEAEAE', 
+    '--colorSecDark': '#544455', '--colorSecMid': '#632a2a', '--colorSecLight': '#AEAEAE', 
     '--colorHighlight': '#544455', '--colorInvalid': '#898989', '--colorValid': '#AEAEAE', }
+
 const niflheim = {'--colorPrimDark': '#544455', '--colorPrimMid': '#898989','--colorPrimLight': '#AEAEAE', 
     '--colorSecDark': '#544455', '--colorSecMid': '#222552', '--colorSecLight': '#AEAEAE', 
     '--colorHighlight': '#544455', '--colorInvalid': '#491414', '--colorValid': '#AEAEAE', }
 //#endregion
+//#region Define Notification Icons
+const icons = { error: '../images/icons/alert-rhombus.svg',
+    alert: '../images/icons/bell-alert-outline.svg',
+    notification: '../images/icons/message-text-outline.svg',
+    success: '../images/icons/check-decagram.svg',
+    failure: '../images/icons/car-brake-alert.svg',
+} 
+//#endregion
+
 
 async function init(){
     const sitePrefs = new SitePreferences(dbi);
@@ -47,6 +60,7 @@ async function init(){
     document.addEventListener('click', async e => {
         if(!navBar.contains(e.target) && !navBar.classList.contains('collapsed')){
             toggleNavBar();
+            return;
         }
 
         let targ = e.target.closest('#navBar li');
@@ -69,6 +83,7 @@ async function init(){
         targ = e.target.closest('#dlgPreferences .close');
         if(targ){
             dlgPrefs.hidePopover();
+            return;
         }
     })
 
@@ -129,12 +144,13 @@ async function init(){
     function notify(icon, message = []){
         const notifIcon = notification.querySelector('.icon');
         const notifMsg = notification.querySelector('.message');
-        notifIcon.src = icon ? icon : '../images/icons/alert-outline.svg';
+        notifIcon.src = icon in icons ? icons[icon] : '../images/icons/alert-outline.svg';
         const p1 = document.createElement('p');
         if(!message.length > 1){
             p1.textContent = message[0] ? message[0] : 'Uh oh! Someone else messed up...';
-            notifMsg.append(p1);
+            notifMsg.replaceChildren(p1);
         }else{
+            notifMsg.replaceChildren();
             message.forEach(v => {
                 const p = document.createElement('p');
                 p.textContent = v;
