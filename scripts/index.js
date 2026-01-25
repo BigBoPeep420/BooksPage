@@ -110,7 +110,6 @@ async function init(){
         notificationTimer = null;
     })
 
-
     navigate('landingPage');
 
     async function navigate(page){

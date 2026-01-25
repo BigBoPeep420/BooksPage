@@ -260,6 +260,10 @@ body{
         display: grid;
         grid-template-columns: clamp(20px, 15dvw, 80px) auto min-content;
         align-items: center;
+        background: linear-gradient(to bottom,
+            var(--colorPrimDark),
+            var(--colorPrimLight)80%,
+            transparent);
         padding: clamp(10px, 3dvw, 20px);
         column-gap: 5%;
         .icon{
@@ -272,6 +276,7 @@ body{
         }
         .close{
             grid-area: 1/3/2/4;
+            position: static;
             svg{
                 width: min(30px, 6dvw);
                 height: min(30px, 6dvw);
