@@ -70,7 +70,7 @@ export async function init(utilities){
         const isbn = data.get('isbn'); const read = data.get('read');
         console.log(await bookMgr.findByISBN(isbn))
         if(bookMgr.findByISBN(isbn)[0]){
-            utilities.notify('failure', ['Book with ISBN already exists!']);
+            utilities.notify('iconFailure', ['Book with ISBN already exists!']);
             return;
         }
 
@@ -78,18 +78,17 @@ export async function init(utilities){
             const book = new Book(title, author, pages, summary, isbn, read);
             await bookMgr.addBook(book);
             booksMem.push({...book, searchBlob: `${book.title} ${book.author} ${book.isbn}`.toLowerCase()});
-            utilities.notify('success', [`Added '${book.title}' to library!`]);
+            utilities.notify('iconSuccess', [`Added '${book.title}' to library!`]);
             dlgAddBook.hidePopover();
             bkSearchDrawer.querySelector('#bookSearch').dispatchEvent(new InputEvent('input'));
         }catch (e) {
-            utilities.notify('failure', ['Failed to add book :(', `${e}`]);
+            utilities.notify('iconFailure', ['Failed to add book :(', `${e}`]);
         }
     })
 
 
 
-    dlgAddBook.showPopover()
-
+    showBookInfo(1234567891)
 
 
 
@@ -108,18 +107,18 @@ export async function init(utilities){
         const pgsDem = document.createElement('span'); pgsDem.textContent = 'pgs';
         const sum = document.createElement('p'); sum.classList.add('summary');
         const read = document.createElement('div'); read.classList.add('read');
-        const readIco = document.createElement('img');
+        let readIco;
         switch(book.read){
             case 'Yes':
-                readIco.src = './images/icons/emoticon-cool-outline.svg';
+                readIco = utilities.createIcon('iconReadYes');
                 read.classList.add('yes');
                 break;
             case 'Started':
-                readIco.src = './images/icons/emoticon-happy-outline.svg';
+                readIco = utilities.createIcon('iconReadStarted');
                 read.classList.add('started');
                 break;
             default:
-                readIco.src = './images/icons/emoticon-cry-outline.svg';
+                readIco = utilities.createIcon('iconReadNo');
                 read.classList.add('no');
                 break;
         }
@@ -144,19 +143,19 @@ export async function init(utilities){
         dlgBookInfo.querySelector('.author p').textContent = book.author;
         dlgBookInfo.querySelector('.pages p').textContent = book.pages;
         dlgBookInfo.querySelector('.summary p').textContent = book.summary;
-        const img = dlgBookInfo.querySelector('.read img');
+        const icon = dlgBookInfo.querySelector('.read .icon');
         switch(book.read){
             case 'Yes':
-                img.src = './images/icons/emoticon-cool-outline.svg';
+                icon.replaceWith(utilities.createIcon('iconReadYes'));
                 break;
             case 'Started':
-                img.src = './images/icons/emoticon-happy-outline.svg';
+                icon.replaceWith(utilities.createIcon('iconReadStarted'));
                 break;
             default:
-                img.src = './images/icons/emoticon-cry-outline.svg';
+                icon.replaceWith(utilities.createIcon('iconReadNo'));
                 break;
         }
-        dlgBookInfo.querySelector('.read').dataset.read = book.read.toLowerCase();
+        dlgBookInfo.querySelector('.read').classList.add(book.read);
         dlgBookInfo.querySelector('.isbn p').textContent = 'ISBN: ' + isbn;
         dlgBookInfo.showModal();
     }

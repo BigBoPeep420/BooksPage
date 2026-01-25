@@ -28,14 +28,7 @@ const niflheim = {'--colorPrimDark': '#544455', '--colorPrimMid': '#898989','--c
     '--colorHighlight': '#544455', '--colorInvalid': '#491414', '--colorValid': '#AEAEAE',
     '--colorTextLight': '#FFFFFF', '--colorTextDark': '#999999',}
 //#endregion
-//#region Define Notification Icons
-const icons = { error: './images/icons/alert-rhombus.svg',
-    alert: './images/icons/bell-alert-outline.svg',
-    notification: './images/icons/message-text-outline.svg',
-    success: './images/icons/check-decagram.svg',
-    failure: './images/icons/car-brake-alert.svg',
-} 
-//#endregion
+
 
 
 async function init(){
@@ -45,7 +38,7 @@ async function init(){
     const dlgPrefs = document.getElementById('dlgPreferences');
     const notification = document.getElementById('notification');
     let notificationTimer = null;
-    const utilities = {prefs: sitePrefs, abort: abortCont, navigate: navigate, dbi: dbi, notify: notify};
+    const utilities = {prefs: sitePrefs, abort: abortCont, navigate: navigate, dbi: dbi, notify: notify, createIcon: createIcon};
 
     //#region Initialize Themes
     const themeMgr = new ThemeManager(sitePrefs);
@@ -105,7 +98,7 @@ async function init(){
     })
 
 
-    navigate('bookClubs');
+    navigate('userLibrary');
 
     async function navigate(page){
         const resp = await fetch(`./pages/${page}.html`);
@@ -113,10 +106,10 @@ async function init(){
         cont.replaceChildren();
         if(!resp.ok){
             const err = document.createElement('div'); err.classList.add('errMsg');
-            const img = document.createElement('img'); img.src = './images/icons/car-brake-alert.svg';
+            const icon = createIcon('iconFailure');
             const msg = document.createElement('p'); msg.textContent = 'Page Not Found :(';
             const msg2 = document.createElement('p'); msg2.textContent = "Don't worry, you can blame someone else this time."
-            err.append(img, msg, msg2); cont.append(err);
+            err.append(icon, msg, msg2); cont.append(err);
         }else{
             const pg = await resp.text();
             cont.innerHTML = pg;
