@@ -21,6 +21,8 @@
         font-size: calc(var(--fontSize3));
         border-radius: 15px;
         padding: 0 10px;
+        background-color: var(--colorPrimDark);
+        color: var(--colorTextLight);
     }
     #bookSearchToggle{
         background-color: var(--colorSecLight);
