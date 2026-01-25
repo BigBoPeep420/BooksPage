@@ -16,7 +16,7 @@ export async function init(utilities){
     renderBookCards();
 
 
-    document.addEventListener('click', e => {
+    document.addEventListener('click', async e => {
         let targ = e.target.closest('#bookSearchToggle');
         if(targ){
             bkSearchDrawer.classList.toggle('collapsed');
@@ -42,6 +42,22 @@ export async function init(utilities){
             return;
         }
 
+        targ = e.target.closest('#dlgBookInfo .close');
+        if(targ){
+            dlgBookInfo.close();
+            return;
+        }
+
+        targ = e.target.closest('#dlgBookInfo .delete');
+        if(targ){
+            await bookMgr.deleteBookByISBN(dlgBookInfo.dataset.isbn);
+            const index = booksMem.findIndex(book => book.isbn == dlgBookInfo.dataset.isbn);
+            booksMem.splice(index, 1);
+            document.getElementById('bookSearch').dispatchEvent(new InputEvent('input'));
+            dlgBookInfo.close();
+            return;
+        }
+
         if(e.target == dlgBookInfo){
             const rect = dlgBookInfo.getBoundingClientRect();
             const inside = (e.clientX >= rect.left && e.clientX <= rect.right
@@ -56,7 +72,6 @@ export async function init(utilities){
             cardsGrid.replaceChildren();
             booksToShow = [...booksMem];
         }else{
-            console.log(input)
             booksToShow = booksMem.filter(book => input.every(term => book.searchBlob.includes(term)));
         }
         renderBookCards();
@@ -88,9 +103,6 @@ export async function init(utilities){
 
 
 
-    showBookInfo(1234567891)
-
-
 
     async function loadBooksFromDB() {
         const allBooks = await bookMgr.getAllBooks();
@@ -107,19 +119,23 @@ export async function init(utilities){
         const pgsDem = document.createElement('span'); pgsDem.textContent = 'pgs';
         const sum = document.createElement('p'); sum.classList.add('summary');
         const read = document.createElement('div'); read.classList.add('read');
+        read.classList.add('hasTooltip');
         let readIco;
         switch(book.read){
             case 'Yes':
                 readIco = utilities.createIcon('iconReadYes');
                 read.classList.add('yes');
+                read.dataset.tip = "You've read this book!";
                 break;
             case 'Started':
                 readIco = utilities.createIcon('iconReadStarted');
                 read.classList.add('started');
+                read.dataset.tip = "You've started this book.";
                 break;
             default:
                 readIco = utilities.createIcon('iconReadNo');
                 read.classList.add('no');
+                read.dataset.tip = "You haven't started this one yet...";
                 break;
         }
         read.append(readIco);
@@ -139,23 +155,31 @@ export async function init(utilities){
 
     function showBookInfo(isbn){
         const book = booksMem.filter(book => book.searchBlob.includes(isbn))[0];
+        dlgBookInfo.dataset.isbn = book.isbn;
         dlgBookInfo.querySelector('.title p').textContent = book.title;
         dlgBookInfo.querySelector('.author p').textContent = book.author;
         dlgBookInfo.querySelector('.pages p').textContent = book.pages;
         dlgBookInfo.querySelector('.summary p').textContent = book.summary;
-        const icon = dlgBookInfo.querySelector('.read .icon');
+        const read = dlgBookInfo.querySelector('.read');
+        const icon = read.querySelector('.icon');
         switch(book.read){
             case 'Yes':
                 icon.replaceWith(utilities.createIcon('iconReadYes'));
+                read.classList.remove('Started', 'No');
+                read.dataset.tip = "You've read this book!";
                 break;
             case 'Started':
                 icon.replaceWith(utilities.createIcon('iconReadStarted'));
+                read.classList.remove('Yes', 'No');
+                read.dataset.tip = "You've started reading this book";
                 break;
             default:
                 icon.replaceWith(utilities.createIcon('iconReadNo'));
+                read.classList.remove('Yes', 'Started');
+                read.dataset.tip = "You haven't started this book yet..."
                 break;
         }
-        dlgBookInfo.querySelector('.read').classList.add(book.read);
+        read.classList.add(book.read);
         dlgBookInfo.querySelector('.isbn p').textContent = 'ISBN: ' + isbn;
         dlgBookInfo.showModal();
     }

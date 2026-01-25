@@ -10,7 +10,8 @@
     z-index: 900;
     position: fixed;
     position-anchor: --footerAnc;
-    bottom: anchor(top);
+    bottom: calc(anchor(top) - var(--bookSearchHeight));
+    transition: transform 0.5s ease;
     #bookSearchToggle{
         background-color: var(--colorSecLight);
         opacity: 0.5;
@@ -22,14 +23,18 @@
         left: calc(50% - 22.5px);
         border-radius: 40% 40% 0px 0px;
         cursor: pointer;
+        transition: opacity 0.3s ease;
         svg{
             height: var(--fontSize3);
             width: var(--fontSize3);
         }
     }
+    #bookSearchToggle:hover{
+        opacity: 0.7;
+    }
 }
 #bookSearchDrawer.collapsed{
-    transform: translateY(100%);
+    transform: translateY(-100%);
 }
 
 #addBookButton{
@@ -312,11 +317,11 @@
         padding: 10px;
         display: grid;
         grid-template: repeat(3, min-content) auto min-content / auto min-content;
-        overflow-x: hidden;
-        overflow-y: auto;
+        overflow: hidden;
         row-gap: 10px;
         .read{
             grid-area: -2/2/-1/-1;
+            justify-self: end;
             display: flex;
             padding: 3px;
             border-radius: 50%;
@@ -373,6 +378,22 @@
         .summary{
             grid-area: 4/1/5/-1;
             width: 100%;
+            overflow-y: auto;
+            font-size: calc(var(--fontSize3) * 0.45);
+        }
+        .delete{
+            grid-area: -2/1/-1/2;
+            display: flex;
+            justify-self: start;
+            align-self: center;
+            border-radius: 50%;
+            padding: 3px;
+            opacity: 0.5;
+            background-color: var(--colorInvalid);
+            svg{
+                width: var(--fontSize3);
+                height: var(--fontSize3);
+            }
         }
     }
 }

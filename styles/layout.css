@@ -3,7 +3,6 @@
     src: url(./fonts/Sansation-Regular.woff2) format(woff2);
 }
 :root{
-    --navBarWidth: 50dvw;
     --navBarToggleWidth: 50px;
     --dlgCloseBtnWidth: min(20px, 6dvw);
     --fontSize3: clamp(1rem, calc(4dvw + 1rem), 2rem);
@@ -97,7 +96,12 @@ body{
     }
 
     #navBar{
-        background-color: brown;
+        --navBarWidth: clamp(200px, 40dvw, 250px);
+        background: linear-gradient(to right,
+            var(--colorSecMid),
+            var(--colorSecLight) 30%,
+            var(--colorSecLight) 70%,
+            var(--colorSecMid));
         position: fixed;
         width: var(--navBarWidth);
         top: 0;
@@ -108,6 +112,7 @@ body{
         display: flex;
         flex-direction: column;
         padding: 10% 5%;
+        box-shadow: inset 0 0 50px 0px #000000b4;
         #navBarToggle{
             position: absolute;
             top: calc(50% - (var(--navBarToggleWidth)*0.5));
@@ -129,7 +134,7 @@ body{
             opacity: 0.7;
         }
         .navLinkGroup{
-            width: 100%;
+            align-self: center;
             display: flex;
             flex-direction: column;
             gap: 10px;
@@ -141,11 +146,12 @@ body{
                 width: fit-content;
                 transition: transform 0.2s linear;
                 svg{
-                    width: 30px;
-                    height: 30px;
+                    width: var(--fontSize3);
+                    height: var(--fontSize3);
                 }
                 p{
                     white-space: nowrap;
+                    font-size: calc(var(--fontSize2) * 0.8);
                 }
             }
             li:hover{
@@ -283,4 +289,32 @@ body{
             font-weight: bold;
         }
     }
+
+    #tooltip{
+        position: fixed;
+        top: 0;
+        left: 0;
+        background-color: var(--colorPrimDark);
+        pointer-events: none;
+        z-index: 1500;
+        transition: opacity 0.3s linear allow-discrete;
+        border-radius: 10px;
+        opacity: 0;
+        outline: solid 2px var(--colorHighlight);
+        p{
+            border-radius: 10px;
+            font-size: calc(var(--fontSize1) * 1);
+            padding: 4px 10px;
+        }
+    }
+    #tooltip:popover-open{
+        opacity: 0.7;
+        @starting-style{
+            opacity: 0;
+        }
+    }
+    #tooltip::backdrop{
+        display: none;
+    }
+    
 }

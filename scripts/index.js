@@ -37,6 +37,7 @@ async function init(){
     const navBar = document.getElementById('navBar');
     const dlgPrefs = document.getElementById('dlgPreferences');
     const notification = document.getElementById('notification');
+    const tooltip = document.getElementById('tooltip');
     let notificationTimer = null;
     const utilities = {prefs: sitePrefs, abort: abortCont, navigate: navigate, dbi: dbi, notify: notify, createIcon: createIcon};
 
@@ -82,6 +83,20 @@ async function init(){
         if(targ){
             dlgPrefs.hidePopover();
             return;
+        }
+    })
+
+    document.addEventListener('mousemove', e => {
+        const targ = e.target.closest('.hasTooltip');
+        if(targ){
+            tooltip.querySelector('p').textContent = targ.dataset.tip;
+            const x = e.clientX + 20;
+            const rEd = window.innerWidth - tooltip.offsetWidth;
+            const fX = x > rEd ? e.clientX - tooltip.offsetWidth - 20 : x;
+            tooltip.style.transform = `translate(${fX}px, ${e.clientY + 20}px)`;
+            tooltip.showPopover();
+        }else{
+            tooltip.hidePopover();
         }
     })
 
@@ -136,6 +151,11 @@ async function init(){
                 break;
             default:
                 navBar.classList.toggle('collapsed')
+        }
+        if(navBar.classList.contains('collapsed')){
+            navBar.querySelector('#navBarToggle svg').replaceWith(createIcon('iconNavBarOpen'));
+        }else{
+            navBar.querySelector('#navBarToggle svg').replaceWith(createIcon('iconNavBarClose'))
         }
     }
 
