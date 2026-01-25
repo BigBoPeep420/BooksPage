@@ -226,10 +226,15 @@
                 padding: 3px;
                 width: min(50px, 8dvw);
                 height: min(50px, 8dvw);
+                cursor: pointer;
+                transition: scale 0.3s ease-out;
                 svg{
                     height: 100%;
                     width: 100%;
                 }
+            }
+            .submit:hover{
+                scale: 1.1;
             }
         }
     }

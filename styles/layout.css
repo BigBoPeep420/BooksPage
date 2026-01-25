@@ -283,6 +283,9 @@ body{
             }
         }
     }
+    #notification:popover-open::backdrop{
+        display: none;
+    }
 
     .errMsg{
         position: absolute;
