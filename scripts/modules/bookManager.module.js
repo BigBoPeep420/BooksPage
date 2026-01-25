@@ -1,5 +1,3 @@
-import { DBI } from "./dbi.module.js";
-
 export class BookManager{
     constructor(dbi){
         this.dbi = dbi;
@@ -58,7 +56,7 @@ export class Book{
         if(author.length < 3) throw new RangeError('Author must be at least 3 characters');
         if(pages < 1) throw new RangeError(`Pages must be at least 1`);
         const isbnDig = isbn.toString().length;
-        if(isbnDig == 10 || isbnDig == 13){
+        if(/^(\d{10}|\d{13})$/.test(isbn)){
             this.title = title;
             this.author = author;
             this.pages = pages;
@@ -102,8 +100,12 @@ export class Book{
         for(let i = 0; i < isbnLength; i++){
             isbn.push(Math.floor(Math.random() * 9));
         }
+        //GenRead
+        const rand = Math.floor(Math.random() * 3);
+        let read = rand > 0 ? 'Yes' : 'Started';
+        read = rand > 1 ? 'No' : read;
 
-        return new Book(title.join(' '), author.join(' '), pages, summary.join('. '), parseInt(isbn.join('')));
+        return new Book(title.join(' '), author.join(' '), pages, summary.join('. '), isbn.join(''), read);
     }
 
     static #generateWord(capitalize = false, allowSingles = false){
@@ -111,7 +113,7 @@ export class Book{
             'l','m','n','p','q','r','s','t','v','w','x','z'];
         const vowels = ['a','e','i','o','u','y']
         const randNum = Math.floor(Math.random() * 9 + 1);
-        const word = [];
+        let word = [];
         if(randNum == 1){
             const bool = Math.random() >= 0.5;
             if(allowSingles){
@@ -122,13 +124,11 @@ export class Book{
             word.push(getVowel());
         }else if(randNum == 3){
             const lets = [getConsonant(), getConsonant(), getVowel()];
-            for(let i = 0; i < 3; i++){
-                const num = Math.floor(Math.random() * 2);
-                if(!word.includes(lets[num])) word.push(lets[num]);
-                else{
-                    i--;
-                }
+            for(let i = lets.length - 1; i > 0; i--){
+                const x = Math.floor(Math.random() * (i + 1));
+                [lets[i], lets[x]] = [lets[x], lets[i]];
             }
+            word = [...lets];
         }else for(let i = 0; i < randNum; i++){
             word.push(Math.random() >= 0.5 ? getConsonant() : getVowel());
         }
@@ -143,7 +143,7 @@ export class Book{
             return consonants[Math.floor(Math.random() * consonants.length)];
         }
         function getVowel(){
-            return vowels[Math.floor(Math.random * vowels.length)];
+            return vowels[Math.floor(Math.random() * vowels.length)];
         }
 
     }

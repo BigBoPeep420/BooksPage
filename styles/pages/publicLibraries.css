@@ -1,0 +1,90 @@
+#cardsGrid{
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(20dvw, 400px));
+    grid-auto-rows: clamp(125px, 20dvh, 150px);
+    justify-content: center;
+    gap: 10px;
+    padding: 10px;
+    .bookCard{
+        background-color: var(--colorSecDark);
+        border-radius: 15px;
+        display: grid;
+        grid-template: min-content min-content auto / 1fr auto;
+        align-items: center;
+        padding: 10px;
+        row-gap: 4px;
+        box-shadow: 2px 2px 7px;
+        outline: solid 1px;
+        overflow: hidden;
+        cursor: pointer;
+        .read{
+            grid-area: 1/2/2/-1;
+            justify-self: end;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2px;
+            opacity: 0.7;
+            svg{
+                width: var(--fontSize3);
+                height: var(--fontSize3);
+                opacity: 1;
+            }
+        }
+        .read.yes{
+            background: radial-gradient(farthest-corner,
+                transparent 50%,
+                #107a16 70%,
+                transparent)
+        }
+        .read.started{
+            background: radial-gradient(farthest-corner,
+                transparent 50%,
+                #a3ad12 70%,
+                transparent)
+        }
+        .read.no{
+            background: radial-gradient(farthest-corner,
+                transparent 50%,
+                #701515 70%,
+                transparent)
+        }
+        .title, .author{
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .title{
+            font-size: calc(var(--fontSize3) * 0.7);
+            font-weight: bold;
+        }
+        .author{
+            font-size: calc(var(--fontSize3) * 0.6);
+            font-style: italic;
+        }
+        .pages{
+            span{
+                font-style: italic;
+            }
+        }
+        .summary{
+            grid-area: -2/1/-1/-1;
+            align-self: baseline;
+            overflow-y: auto;
+            overflow-x: hidden;
+            height: 100%;
+            font-size: calc(var(--fontSize3) * 0.5);
+            mask-image: linear-gradient(to bottom,
+                transparent,
+                black 20%,
+                black 80%,
+                transparent);
+            padding: 5px 0;
+            scrollbar-width: none;
+        }
+    }
+    .bookCard:hover{
+        transform: scale(1.05) translate(0, 5px);
+    }
+}
