@@ -64,9 +64,7 @@ async function init(){
 
         let targ = e.target.closest('#navBar li');
         if(targ){
-            if(targ.dataset.page == 'about'){
-
-            }else if(targ.dataset.page == 'preferences'){
+            if(targ.dataset.page == 'preferences'){
                 dlgPrefs.showPopover();
             }else await navigate(targ.dataset.page);
             toggleNavBar();
