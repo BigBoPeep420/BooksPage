@@ -3,30 +3,30 @@ import { dbi } from "./dbConfig.js";
 dbi.open();
 
 //#region Define Themes
-const helheim = {'--colorPrimDark': '#544455', '--colorPrimMid': '#898989','--colorPrimLight': '#AEAEAE', 
-    '--colorSecDark': '#544455', '--colorSecMid': '#404046', '--colorSecLight': '#AEAEAE', 
-    '--colorHighlight': '#544455', '--colorInvalid': '#898989', '--colorValid': '#AEAEAE', 
-    '--colorTextLight': '#FFFFFF', '--colorTextDark': '#999999',}
+const helheim = {'--colorPrimDark': '#56575a', '--colorPrimMid': '#76787c','--colorPrimLight': '#909297', 
+    '--colorSecDark': '#2c2c30', '--colorSecMid': '#3d3d41', '--colorSecLight': '#525258', 
+    '--colorHighlight': '#e4e4e4', '--colorInvalid': '#632222', '--colorValid': '#25581f', 
+    '--colorTextLight': '#caccd8', '--colorTextDark': '#686868',}
 
-const asgard = {'--colorPrimDark': '#544455', '--colorPrimMid': '#898989','--colorPrimLight': '#AEAEAE', 
-    '--colorSecDark': '#544455', '--colorSecMid': '#d8d8c2', '--colorSecLight': '#AEAEAE', 
-    '--colorHighlight': '#544455', '--colorInvalid': '#898989', '--colorValid': '#AEAEAE',
-    '--colorTextLight': '#FFFFFF', '--colorTextDark': '#999999',}
+const asgard = {'--colorPrimDark': '#c4c4ae', '--colorPrimMid': '#c3caa4','--colorPrimLight': '#aaac97', 
+    '--colorSecDark': '#b4b085', '--colorSecMid': '#d6d19d', '--colorSecLight': '#e7e2a8', 
+    '--colorHighlight': '#0e0672', '--colorInvalid': '#df2121', '--colorValid': '#3ca827',
+    '--colorTextLight': '#141414', '--colorTextDark': '#999999',}
 
-const midgard = {'--colorPrimDark': '#544455', '--colorPrimMid': '#898989','--colorPrimLight': '#AEAEAE', 
-    '--colorSecDark': '#544455', '--colorSecMid': '#816d53', '--colorSecLight': '#AEAEAE', 
-    '--colorHighlight': '#544455', '--colorInvalid': '#898989', '--colorValid': '#AEAEAE',
-    '--colorTextLight': '#FFFFFF', '--colorTextDark': '#999999',}
+const midgard = {'--colorPrimDark': '#77756d', '--colorPrimMid': '#99978f','--colorPrimLight': '#bebcb0', 
+    '--colorSecDark': '#3b3225', '--colorSecMid': '#61523e', '--colorSecLight': '#806c52', 
+    '--colorHighlight': '#2f3ad6', '--colorInvalid': '#991d1d', '--colorValid': '#1c7411',
+    '--colorTextLight': '#f0e4d8', '--colorTextDark': '#999999',}
 
-const muspelheim = {'--colorPrimDark': '#55534e', '--colorPrimMid': '#8b8981','--colorPrimLight': '#b4b1a8', 
+const muspelheim = {'--colorPrimDark': '#2c3033', '--colorPrimMid': '#3b3c41','--colorPrimLight': '#505258', 
     '--colorSecDark': '#461b1b', '--colorSecMid': '#642727', '--colorSecLight': '#803131', 
     '--colorHighlight': '#965f18', '--colorInvalid': '#881717', '--colorValid': '#144412',
-    '--colorTextLight': '#d6c287', '--colorTextDark': '#ad9c69',}
+    '--colorTextLight': '#bdb59d', '--colorTextDark': '#423e33',}
 
-const niflheim = {'--colorPrimDark': '#544455', '--colorPrimMid': '#898989','--colorPrimLight': '#AEAEAE', 
-    '--colorSecDark': '#544455', '--colorSecMid': '#222552', '--colorSecLight': '#AEAEAE', 
-    '--colorHighlight': '#544455', '--colorInvalid': '#491414', '--colorValid': '#AEAEAE',
-    '--colorTextLight': '#FFFFFF', '--colorTextDark': '#999999',}
+const niflheim = {'--colorPrimDark': '#758388', '--colorPrimMid': '#7e949c','--colorPrimLight': '#9ab2bb', 
+    '--colorSecDark': '#181a3b', '--colorSecMid': '#20245a', '--colorSecLight': '#2b3079', 
+    '--colorHighlight': '#aa3131', '--colorInvalid': '#701f1f', '--colorValid': '#1a6317',
+    '--colorTextLight': '#ccdcdf', '--colorTextDark': '#999999',}
 //#endregion
 
 
@@ -113,7 +113,7 @@ async function init(){
     })
 
 
-    navigate('userLibrary');
+    navigate('landingPage');
 
     async function navigate(page){
         const resp = await fetch(`./pages/${page}.html`);

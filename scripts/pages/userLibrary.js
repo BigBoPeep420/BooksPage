@@ -180,7 +180,7 @@ export async function init(utilities){
                 break;
         }
         read.classList.add(book.read);
-        dlgBookInfo.querySelector('.isbn p').textContent = 'ISBN: ' + isbn;
+        dlgBookInfo.querySelector('.isbn p').textContent = 'ISBN: ' + book.isbn;
         dlgBookInfo.showModal();
     }
 }

@@ -1,0 +1,30 @@
+#content{
+    padding: 3% 7%;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    row-gap: 5%;
+    .welcome{
+        display: flex;
+        flex-direction: column;
+        row-gap: 10px;
+        hr{
+            border: solid 1px var(--colorTextLight);
+            opacity: 0.4;
+            border-radius: 50%;
+        }
+        h2, p{
+            margin-left: 2%;
+            color: var(--colorTextLight);
+        }
+        h2{font-size: calc(var(--fontSize3));}
+        p{
+            font-size: calc(var(--fontSize1));
+            font-style: italic;
+        }
+    }
+    p{
+        font-size: calc(var(--fontSize2) * 0.8);
+        text-indent: 15px;
+    }
+}

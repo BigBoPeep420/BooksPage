@@ -26,15 +26,15 @@
 *:focus{
     outline: solid 2px var(--colorHighlight);
 }
-p{
+p, legend{
     user-select: none;
-    color: var(--colorTextDark);
+    color: var(--colorTextLight);
 }
 span{
-    color: var(--colorTextDark)
+    color: var(--colorTextLight)
 }
 svg{
-    fill: var(--colorTextDark)
+    fill: var(--colorTextLight)
 }
 .close{
     display: flex;
@@ -46,11 +46,15 @@ svg{
     cursor: pointer;
     background-color: var(--colorInvalid);
     opacity: 0.4;
+    transition: opacity 0.3s ease;
     svg{
         width: var(--dlgCloseBtnWidth);
         height: var(--dlgCloseBtnWidth);
-        fill: var(--colorTextDark);
+        fill: var(--colorTextLight);
     }
+}
+.close:hover{
+    opacity: 0.7;
 }
 ::backdrop{
     background-color: rgba(0, 0, 0, 0.664);
@@ -61,7 +65,7 @@ svg{
 body{
     position: relative;
     display: grid;
-    grid-template-rows: clamp(100px, 20dvh, 180px) 1fr min-content;
+    grid-template-rows: clamp(100px, 20dvh, 180px) 1fr max-content;
     height: 100dvh;
     width: 100dvw;
     anchor-name: --body;
@@ -112,7 +116,9 @@ body{
         display: flex;
         flex-direction: column;
         padding: 10% 5%;
-        box-shadow: inset 0 0 50px 0px #000000b4;
+        box-shadow: inset 0 0 50px 0px #000000b4,
+            0 0 20px 0;
+        border-right: solid 1px black;
         #navBarToggle{
             position: absolute;
             top: calc(50% - (var(--navBarToggleWidth)*0.5));
@@ -164,6 +170,8 @@ body{
     }
     #navBar.collapsed{
         transform: translateX(calc(-1 * calc(var(--navBarWidth) + 1px)));
+        box-shadow: inset 0 0 50px 0px #000000b4;
+        border-right: none;
         .navLinkGroup{
             overflow: hidden;
         }
@@ -179,10 +187,16 @@ body{
     }
     
     #footer{
-        background-color: gold;
+        background-color: var(--colorSecMid);
+        display: flex;
+        justify-content: center;
         grid-area: 3/1/4/-1;
-        z-index: 1000;
+        z-index: 500;
         anchor-name: --footerAnc;
+        padding: 5px;
+        p{
+            font-size: calc(var(--fontSize1) * 0.8);
+        }
     }
 
     #dlgPreferences{
@@ -191,7 +205,7 @@ body{
         margin: auto;
         padding: min(10px, 2dvw);
         border-radius: 15px;
-        
+        background-color: var(--colorSecDark);
         legend:nth-of-type(1){
             margin: 5% 5%;      
             font-size: clamp(0.5rem, calc(1dvw + 0.6rem), 1rem)
@@ -210,6 +224,7 @@ body{
                 gap: min(1dvh, 10px);
                 width: min(70px, 15dvw);
                 transition: transform 0.5s linear;
+                cursor: pointer;
                 div{
                     width: min(50px, 10dvw);
                     height: min(50px, 10dvw);
@@ -308,7 +323,7 @@ body{
         }
     }
     #tooltip:popover-open{
-        opacity: 0.7;
+        opacity: 1;
         @starting-style{
             opacity: 0;
         }
